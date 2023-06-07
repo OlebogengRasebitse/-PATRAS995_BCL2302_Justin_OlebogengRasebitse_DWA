@@ -29,9 +29,13 @@
 // });
 
 
+/**
+ * This handles a form submission and performs a division operation based on the input values.
+ * 
+ * 
+ */
 
-
-
+//select the HTML elements from the document using the querySelector method and store them in the variables form and result
 const form = document.querySelector("[data-form]");
 const result = document.querySelector("[data-result]");
 
@@ -49,12 +53,11 @@ form.addEventListener("submit", (event) => {
       throw new Error(errorMessage);
 
       //empty inputs
-    } else {
-      if (dividend === "" || divider === "") {
+    }if (dividend === "" || divider === "") {
         result.innerText = "Division not performed. Both values are required in inputs. Try again";
 
         //20 * -3
-      } else if (divider < 0 || dividend < 0 ) {
+      }if (divider < 0 || dividend < 0 ) {
         result.innerText = "Division not performed. Invalid number provided. Try again";
         throw new Error("Division not performed. Invalid number provided. Try again");
 
@@ -64,6 +67,8 @@ form.addEventListener("submit", (event) => {
         result.innerText = divisionResult;
       }
     }
+
+    //If any errors occur within the try block, they will be caught by the catch block. In this case, the error is logged to the console using 
   } catch (error) {
     // Handle the error if necessary
     console.error(error);

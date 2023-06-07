@@ -1,5 +1,5 @@
 // Fully working scripts.js file
-import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
+import { books, authors, genres, BOOKS_PER_PAGE } from './data.JS'
 
 let page = 1;
 let matches = books
