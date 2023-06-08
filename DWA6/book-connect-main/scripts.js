@@ -1,5 +1,4 @@
-// Fully working scripts.js file
-import { books, authors, genres, BOOKS_PER_PAGE } from './data.JS'
+import { books, authors, genres, BOOKS_PER_PAGE } from './data.js'
 
 let page = 1;
 let matches = books
@@ -25,8 +24,15 @@ for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
 
     starting.appendChild(element)
 }
-
 document.querySelector('[data-list-items]').appendChild(starting)
+
+
+
+
+
+
+
+
 
 const genreHtml = document.createDocumentFragment()
 const firstGenreElement = document.createElement('option')
@@ -57,6 +63,11 @@ for (const [id, name] of Object.entries(authors)) {
 }
 
 document.querySelector('[data-search-authors]').appendChild(authorsHtml)
+
+
+
+
+
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
     document.querySelector('[data-settings-theme]').value = 'night'
@@ -136,8 +147,7 @@ document.querySelector('[data-search-form]').addEventListener('submit', (event) 
         }
     }
 
-    page = 1;
-    matches = result
+
 
     if (result.length < 1) {
         document.querySelector('[data-list-message]').classList.add('list__message_show')
@@ -235,3 +245,5 @@ document.querySelector('[data-list-items]').addEventListener('click', (event) =>
         document.querySelector('[data-list-description]').innerText = active.description
     }
 })
+
+
