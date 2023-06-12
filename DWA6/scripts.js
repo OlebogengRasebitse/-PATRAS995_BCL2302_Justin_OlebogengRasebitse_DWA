@@ -10,6 +10,10 @@ const listItems = document.querySelector('[data-list-items]');
 const listButton = document.querySelector('[data-list-button]');
 const settingsForm = document.querySelector('[data-settings-form]');
 const searchForm = document.querySelector('[data-search-form]');
+const newItems = document.querySelector('[data-list-items]')
+
+
+
 
 // Event Listeners
 searchCancelBtn.addEventListener('click', () => {
@@ -88,30 +92,52 @@ searchForm.addEventListener('submit', (event) => {
         document.querySelector('[data-list-message]').classList.remove('list__message_show');
     }
     listItems.innerHTML = '';
-    const newItems = document.createDocumentFragment();
+  
 
 
-    //Image Preview
-    for (const { author, id, image, title } of result.slice(0, BOOKS_PER_PAGE)) {
-        const element = document.createElement('button');
-        element.classList = 'preview';
-        element.setAttribute('data-preview', id);
 
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
+    //Used Class
+    class BookPreview {
+        constructor({ author, id, image, title }) {
+          this.author = author;
+          this.id = id;
+          this.image = image;
+          this.title = title;
+        }
+      
+        createPreviewElement(authors) {
+          const element = document.createElement('button');
+          element.classList = 'preview';
+          element.setAttribute('data-preview', this.id);
+      
+          element.innerHTML = `
+            <img class="preview__image" src="${this.image}" />
             <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</
-
-                </div>
-                `;
+              <h3 class="preview__title">${this.title}</h3>
+              <div class="preview__author">${authors[this.author]}</div>
+            </div>
+          `;
+      
+          return element;
+        }
+      }
+      
+      const bookPreviews = result
+        .slice(0, BOOKS_PER_PAGE)
+        .map((book) => new BookPreview(book));
+      
+      const newItems = document.createDocumentFragment();
+      for (const bookPreview of bookPreviews) {
+        const element = bookPreview.createPreviewElement(authors);
+        newItems.appendChild(element);
+      }
+      
+    
+      
+  
         
-                newItems.appendChild(element);
-            }
+
+
   let page = 1;
             listItems.appendChild(newItems);
             listButton.enable = (result.length - (page * BOOKS_PER_PAGE)) < 1;
