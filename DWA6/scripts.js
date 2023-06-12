@@ -57,93 +57,84 @@ settingsForm.addEventListener('submit', (event) => {
 
 
 //Search Button
-searchForm.addEventListener('submit', (event) => {
+// Function to filter books based on the provided filters
+function filterBooks(books, filters) {
+    const result = [];
+  
+    for (const book of books) {
+      let genreMatch = filters.genre === 'any';
+  
+      for (const singleGenre of book.genres) {
+        if (genreMatch) break;
+        if (singleGenre === filters.genre) {
+          genreMatch = true;
+        }
+      }
+  
+      if (
+        (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
+        (filters.author === 'any' || book.author === filters.author) &&
+        genreMatch
+      ) {
+        result.push(book);
+      }
+    }
+  
+    return result;
+  }
+  
+  // Function to create a book preview element
+  function createBookPreviewElement(book, authors) {
+    const { author, id, image, title } = book;
+    const element = document.createElement('button');
+    element.classList = 'preview';
+    element.setAttribute('data-preview', id);
+  
+    element.innerHTML = `
+      <img class="preview__image" src="${image}" />
+      <div class="preview__info">
+        <h3 class="preview__title">${title}</h3>
+        <div class="preview__author">${authors[author]}</div>
+      </div>
+    `;
+  
+    return element;
+  }
+  
+  // Function to render book previews to a target element
+  function renderBookPreviews(bookPreviews, targetElement) {
+    const fragment = document.createDocumentFragment();
+    for (const bookPreview of bookPreviews) {
+      const element = createBookPreviewElement(bookPreview.book, bookPreview.authors);
+      fragment.appendChild(element);
+    }
+    targetElement.innerHTML = '';
+    targetElement.appendChild(fragment);
+  }
+  
+  // Event listener for the search form submission
+  searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const filters = Object.fromEntries(formData);
-    const result = [];
-
-
-    //Filtre Genre
-    for (const book of books) {
-        let genreMatch = filters.genre === 'any';
-
-        for (const singleGenre of book.genres) {
-            if (genreMatch) break;
-            if (singleGenre === filters.genre) {
-                genreMatch = true;
-            }
-        }
-
-        if (
-            (filters.title.trim() === '' || book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
-            (filters.author === 'any' || book.author === filters.author) &&
-            genreMatch
-        ) {
-            result.push(book);
-        }
-    }
-
-
-    //Message: No results found. Your filters might be too narrow
-    if (result.length < 1) {
-        document.querySelector('[data-list-message]').classList.add('list__message_show');
+    const filteredBooks = filterBooks(books, filters);
+  
+    if (filteredBooks.length < 1) {
+      document.querySelector('[data-list-message]').classList.add('list__message_show');
     } else {
-        document.querySelector('[data-list-message]').classList.remove('list__message_show');
+      document.querySelector('[data-list-message]').classList.remove('list__message_show');
     }
-    listItems.innerHTML = '';
   
-
-
-
-    //Used Class
-    class BookPreview {
-        constructor({ author, id, image, title }) {
-          this.author = author;
-          this.id = id;
-          this.image = image;
-          this.title = title;
-        }
-      
-        createPreviewElement(authors) {
-          const element = document.createElement('button');
-          element.classList = 'preview';
-          element.setAttribute('data-preview', this.id);
-      
-          element.innerHTML = `
-            <img class="preview__image" src="${this.image}" />
-            <div class="preview__info">
-              <h3 class="preview__title">${this.title}</h3>
-              <div class="preview__author">${authors[this.author]}</div>
-            </div>
-          `;
-      
-          return element;
-        }
-      }
-      
-      const bookPreviews = result
-        .slice(0, BOOKS_PER_PAGE)
-        .map((book) => new BookPreview(book));
-      
-      const newItems = document.createDocumentFragment();
-      for (const bookPreview of bookPreviews) {
-        const element = bookPreview.createPreviewElement(authors);
-        newItems.appendChild(element);
-      }
-      
-    
-      
+    const bookPreviews = filteredBooks
+      .slice(0, BOOKS_PER_PAGE)
+      .map((book) => ({ book, authors }));
   
-        
-
-
-  let page = 1;
-            listItems.appendChild(newItems);
-            listButton.enable = (result.length - (page * BOOKS_PER_PAGE)) < 1;
-        
-        });
-
+    renderBookPreviews(bookPreviews, listItems);
+  
+    let page = 1;
+    listButton.enable = (filteredBooks.length - (page * BOOKS_PER_PAGE)) < 1;
+  });
+  
 
         //Preview Books With More Details
         listItems.addEventListener('click', (event) => {
