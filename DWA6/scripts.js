@@ -1,17 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from './data.js';
-
-// Query selectors
-const searchCancelBtn = document.querySelector('[data-search-cancel]');
-const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
-const headerSearchBtn = document.querySelector('[data-header-search]');
-const headerSettingsBtn = document.querySelector('[data-header-settings]');
-const listCloseBtn = document.querySelector('[data-list-close]');
-const listItems = document.querySelector('[data-list-items]');
-const listButton = document.querySelector('[data-list-button]');
-const settingsForm = document.querySelector('[data-settings-form]');
-const searchForm = document.querySelector('[data-search-form]');
-const newItems = document.querySelector('[data-list-items]')
-
+import { myQuerySelectors } from './theme.js';
 
 
 
