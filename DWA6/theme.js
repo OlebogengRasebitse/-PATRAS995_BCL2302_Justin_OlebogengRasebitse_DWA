@@ -1,4 +1,4 @@
-export const myQuerySelectors = {
+export const bookQuerySelector = {
     searchCancelBtn: document.querySelector('[data-search-cancel]'),
     settingsCancelBtn: document.querySelector('[data-settings-cancel]'),
     headerSearchBtn: document.querySelector('[data-header-search]'),
