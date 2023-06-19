@@ -71,24 +71,7 @@ function filterBooks(books, filters) {
     return result;
   }
   
-  // Function to create a book preview element
-  function createBookPreviewElement(book, authors) {
-    const { author, id, image, title } = book;
-    const element = document.createElement('button');
-    element.classList = 'preview';
-    element.setAttribute('data-preview', id);
-  
-    element.innerHTML = `
-      <img class="preview__image" src="${image}" />
-      <div class="preview__info">
-        <h3 class="preview__title">${title}</h3>
-        <div class="preview__author">${authors[author]}</div>
-      </div>
-    `;
-  
-    return element;
-  }
-  
+
   // Function to render book previews to a target element (Search)
   function renderBookPreviews(bookPreviews, targetElement) {
     const fragment = document.createDocumentFragment();
@@ -164,19 +147,35 @@ function filterBooks(books, filters) {
 
 // Encapsulated the rendering logic within a self-invoking function
 //self-executing anonymous function
-(function () {
-  function renderBookPreviews(books, container) {
+class BookPreviews extends HTMLElement {
+  constructor() {
+    super();
+
+    // Create a shadow root and attach it to the element
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+
+    // Create a container element to hold the book previews
+    const container = document.createElement('div');
+    container.setAttribute('data-list-items', '');
+    shadowRoot.appendChild(container);
+
+
+    // Render the book previews
+    this.renderBookPreviews(container);
+  } 
+
+  renderBookPreviews(container) {
     const fragment = document.createDocumentFragment();
 
     for (const { author, id, image, title } of books) {
-      const element = createBookPreviewElement(author, id, image, title);
+      const element = this.createBookPreviewElement(author, id, image, title);
       fragment.appendChild(element);
     }
 
     container.appendChild(fragment);
   }
 
-  function createBookPreviewElement(author, id, image, title) {
+  createBookPreviewElement(author, id, image, title) {
     const element = document.createElement('button');
     element.classList = 'preview';
     element.setAttribute('data-preview', id);
@@ -202,12 +201,10 @@ function filterBooks(books, filters) {
 
     return element;
   }
+}
 
-  const matches = books.slice(0, BOOKS_PER_PAGE);
-  const starting = document.createDocumentFragment();
-  renderBookPreviews(matches, starting);
-  document.querySelector('[data-list-items]').appendChild(starting);
-})();
+// Define the custom element
+customElements.define('book-previews', BookPreviews);
 
 
 
@@ -262,40 +259,3 @@ document.querySelector('[data-list-button]').innerHTML = `
 //Flexibility: Reusable functions can be easily modified and adapted to different contexts by accepting parameters and returning values. They offer flexibility by allowing you to pass dynamic values and customize their behavior based on specific requirements.
 
 
-//Web Component for custom-book-preview 
-
-  class CustomBookPreview extends HTMLElement {
-    constructor() {
-      super();
-
-      // Attach a shadow root to encapsulate the component
-      const shadowRoot = this.attachShadow({ mode: 'open' });
-
-      // Get the template and clone its content into the shadow DOM
-      const template = document.getElementById('custom-book-preview-template');
-      const instance = template.content.cloneNode(true);
-      shadowRoot.appendChild(instance);
-
-      // Get the elements from the shadow DOM
-      this.previewButton = shadowRoot.querySelector('.preview');
-      this.imageElement = shadowRoot.querySelector('.preview__image');
-      this.titleElement = shadowRoot.querySelector('.preview__title');
-      this.authorElement = shadowRoot.querySelector('.preview__author');
-    }
-
-    connectedCallback() {
-      // Get the book data from the attributes
-      const author = this.getAttribute('author');
-      const id = this.getAttribute('id');
-      const image = this.getAttribute('image');
-      const title = this.getAttribute('title');
-
-      // Set the content of the elements
-      this.previewButton.setAttribute('data-preview', id);
-      this.imageElement.src = image;
-      this.titleElement.innerText = title;
-      this.authorElement.innerText = author;
-    }
-  }
-
-  //For small projects or quick prototypes, combining HTML, CSS, and JavaScript into a single file can simplify development and reduce the number of files to manage. 
