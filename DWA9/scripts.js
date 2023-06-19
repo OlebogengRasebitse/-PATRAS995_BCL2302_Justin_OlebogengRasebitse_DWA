@@ -262,3 +262,40 @@ document.querySelector('[data-list-button]').innerHTML = `
 //Flexibility: Reusable functions can be easily modified and adapted to different contexts by accepting parameters and returning values. They offer flexibility by allowing you to pass dynamic values and customize their behavior based on specific requirements.
 
 
+//Web Component for custom-book-preview 
+
+  class CustomBookPreview extends HTMLElement {
+    constructor() {
+      super();
+
+      // Attach a shadow root to encapsulate the component
+      const shadowRoot = this.attachShadow({ mode: 'open' });
+
+      // Get the template and clone its content into the shadow DOM
+      const template = document.getElementById('custom-book-preview-template');
+      const instance = template.content.cloneNode(true);
+      shadowRoot.appendChild(instance);
+
+      // Get the elements from the shadow DOM
+      this.previewButton = shadowRoot.querySelector('.preview');
+      this.imageElement = shadowRoot.querySelector('.preview__image');
+      this.titleElement = shadowRoot.querySelector('.preview__title');
+      this.authorElement = shadowRoot.querySelector('.preview__author');
+    }
+
+    connectedCallback() {
+      // Get the book data from the attributes
+      const author = this.getAttribute('author');
+      const id = this.getAttribute('id');
+      const image = this.getAttribute('image');
+      const title = this.getAttribute('title');
+
+      // Set the content of the elements
+      this.previewButton.setAttribute('data-preview', id);
+      this.imageElement.src = image;
+      this.titleElement.innerText = title;
+      this.authorElement.innerText = author;
+    }
+  }
+
+  //For small projects or quick prototypes, combining HTML, CSS, and JavaScript into a single file can simplify development and reduce the number of files to manage. 
