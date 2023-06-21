@@ -2,6 +2,8 @@ import { books, authors, genres, BOOKS_PER_PAGE } from './data.js';
 
 import { bookQuerySelector } from './theme.js';
 
+import BookPreviews from './preview.js';
+
 
 // Event Listeners
 bookQuerySelector.searchCancelBtn.addEventListener('click', () => {
@@ -71,6 +73,8 @@ function filterBooks(books, filters) {
     return result;
   }
   
+
+
 
   // Function to render book previews to a target element (Search)
   function renderBookPreviews(bookPreviews, targetElement) {
@@ -142,69 +146,8 @@ function filterBooks(books, filters) {
         });
 
 
-       
-// Existing code...
+      
 
-// Encapsulated the rendering logic within a self-invoking function
-//self-executing anonymous function
-class BookPreviews extends HTMLElement {
-  constructor() {
-    super();
-
-    // Create a shadow root and attach it to the element
-    const shadowRoot = this.attachShadow({ mode: 'open' });
-
-    // Create a container element to hold the book previews
-    const container = document.createElement('div');
-    container.setAttribute('data-list-items', '');
-    shadowRoot.appendChild(container);
-
-
-    // Render the book previews
-    this.renderBookPreviews(container);
-  } 
-
-  renderBookPreviews(container) {
-    const fragment = document.createDocumentFragment();
-
-    for (const { author, id, image, title } of books) {
-      const element = this.createBookPreviewElement(author, id, image, title);
-      fragment.appendChild(element);
-    }
-
-    container.appendChild(fragment);
-  }
-
-  createBookPreviewElement(author, id, image, title) {
-    const element = document.createElement('button');
-    element.classList = 'preview';
-    element.setAttribute('data-preview', id);
-
-    const imageElement = document.createElement('img');
-    imageElement.classList = 'preview__image';
-    imageElement.src = image;
-    element.appendChild(imageElement);
-
-    const infoElement = document.createElement('div');
-    infoElement.classList = 'preview__info';
-    element.appendChild(infoElement);
-
-    const titleElement = document.createElement('h3');
-    titleElement.classList = 'preview__title';
-    titleElement.innerText = title;
-    infoElement.appendChild(titleElement);
-
-    const authorElement = document.createElement('div');
-    authorElement.classList = 'preview__author';
-    authorElement.innerText = authors[author];
-    infoElement.appendChild(authorElement);
-
-    return element;
-  }
-}
-
-// Define the custom element
-customElements.define('book-previews', BookPreviews);
 
 
 
