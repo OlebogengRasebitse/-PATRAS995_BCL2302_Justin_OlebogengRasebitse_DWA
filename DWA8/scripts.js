@@ -162,7 +162,7 @@ function filterBooks(books, filters) {
 
 
        
-// Existing code...
+
 
 // Encapsulated the rendering logic within a self-invoking function
 //self-executing anonymous function
@@ -205,11 +205,14 @@ function filterBooks(books, filters) {
     return element;
   }
 
+  
+
   const matches = books.slice(0, BOOKS_PER_PAGE);
   const starting = document.createDocumentFragment();
   renderBookPreviews(matches, starting);
   document.querySelector('[data-list-items]').appendChild(starting);
 })();
+ console.log(renderBookPreviews)
 
 
 
