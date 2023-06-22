@@ -174,7 +174,6 @@ function filterBooks(books, filters) {
       const element = createBookPreviewElement(author, id, image, title);
       fragment.appendChild(element);
     }
-
     container.appendChild(fragment);
   }
 

@@ -1,7 +1,5 @@
 import { books, authors, genres, BOOKS_PER_PAGE } from './data.js';
 
-// Encapsulated the rendering logic within a self-invoking function
-//self-executing anonymous function
  const template = document.createElement('template');
 template.innerHTML = `
   <style>
