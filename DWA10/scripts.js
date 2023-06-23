@@ -1,4 +1,3 @@
-
 class ResetButton extends HTMLElement {
   constructor() {
     super();
