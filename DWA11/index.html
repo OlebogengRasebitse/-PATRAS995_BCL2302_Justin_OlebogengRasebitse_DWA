@@ -8,45 +8,27 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-   <script src="scripts.js" defer></script>
+   <script src="script.js" defer></script>
    <link rel="stylesheet" href="styles.css">
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.5.0/cdn/themes/light.css" />
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.5.0/dist/shoelace.css">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
-
+   <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.5.0/cdn/shoelace-autoloader.js"></script>
    
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.1/redux.min.js"></script>
 </head>
 <body>
     <header>
         <h1>Tally Count</h1>
-
-    
 </header>
-<!-- <sl-button data-key="reset" variant="default" size="medium" opened>
-    <sl-icon slot="suffix" name="arrow-counterclockwise"></sl-icon>
-    Refresh
-  </sl-button> -->
-
   <reset-button></reset-button>
-
-
 <main class="counter">
-
     <input class="counter__value" data-key="number" readonly value="0" />
-
     <div class="counter__actions">
     <sl-button data-key="subtract" class="counter__button counter__button_first">-</sl-button> 
-
     <sl-button class="counter__button" data-key="add">+</sl-button>
 </div>
-
 </main>
-
-
-   
 <footer class="footer">
     Inspired by <a class="footer__link" href="https://tallycount.app/">Tally Count</a>. Note that this is merely a student practice project for learning JavaScrip.
 </footer>
-
 </body>
 </html>
