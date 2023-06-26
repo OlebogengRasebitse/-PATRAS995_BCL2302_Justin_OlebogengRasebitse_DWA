@@ -28,38 +28,7 @@ body {
 }
 
 
-/*---------sl-button--------*/
-/* styles.css */
 
-/* Align the reset button to the center */
-reset-button {
-    display: flex;
-    justify-content:center;
-    border: #fff;
-}
-
-sl-button::part(base) {
-
-    background-color: var(--color-dark-grey);
- color: #ffffff;
-    border: none;
-    font-size: 2rem;
-    padding-top: 50px;
-}
-
-sl-button[variant="primary"]::part(button) {
-    background-color: #3d3d33;
-    color: #fff;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-  
-  sl-icon[name="arrow-counterclockwise"] {
-    color: #ffffff;
-    margin-right: 8px;
-  }
-  
 
 
 /*------Header-----*/
@@ -119,10 +88,6 @@ header {
     transform: translateY(2%);
 }
 
-.counter__button:disabled {
-    background-color:red;
-  
-}
 
 
 .counter__button_first {

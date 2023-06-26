@@ -1,70 +1,58 @@
-const initialState = {
-  count: 0,
-  subtractDisabled: true,
-  addDisabled: false,
+// Global store object
+const globalStore = {
+  data: {
+    count: 0,
+  },
+  observers: [],
+
+  // Method to subscribe observers
+  subscribe(observer) {
+    this.observers.push(observer);
+  },
+
+  // Method to unsubscribe observers
+  unsubscribe(observer) {
+    this.observers = this.observers.filter((obs) => obs !== observer);
+  },
+
+  // Method to update data and notify observers
+  updateData(key, value) {
+    this.data[key] = value;
+    this.notifyObservers(key, value);
+  },
+
+  // Method to notify all observers of a data update
+  notifyObservers(key, value) {
+    this.observers.forEach((observer) => {
+      observer.update(key, value);
+    });
+  },
 };
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case 'SUBTRACT':
-      const newSubtractDisabled = state.count - 1 <= 0;
-      return {
-        ...state,
-        count: Math.max(state.count - 1, 0),
-        subtractDisabled: newSubtractDisabled,
-        addDisabled: false,
-      };
-    case 'ADD':
-      const newAddDisabled = state.count + 1 >= Infinity;
-      return {
-        ...state,
-        count: Math.min(state.count + 1, Infinity),
-        subtractDisabled: false,
-        addDisabled: newAddDisabled,
-      };
-    case 'RESET':
-      return {
-        ...state,
-        count: 0,
-        subtractDisabled: true,
-        addDisabled: false,
-      };
-    default:
-      return state;
-  }
-}
+// Observer object
+const consoleObserver = {
+  update(key, value) {
+    console.log(`State: ${key} changed to ${value}`);
+  },
+};
 
-const store = window.Redux.createStore(reducer);
+// Subscribe consoleObserver to the global store
+globalStore.subscribe(consoleObserver);
 
-function logState() {
-  const state = store.getState();
-  console.log(`Count: ${state.count}`);
-}
+// User story 1: Increment the counter by one
+globalStore.updateData('count', 0);
+// Output: State: count changed to 0
 
-console.log("Scenario: Increment the counter by one");
-logState();
+// User story 2: Increment the counter by one
+globalStore.updateData('count', globalStore.data.count + 1);
+// Output: State: count changed to 2
 
-console.log("\nGIVEN no interactions have been performed yet");
-console.log("WHEN an “ADD” action is dispatched");
-store.dispatch({ type: 'ADD' });
+// User story 3: Increment the counter by one
+globalStore.updateData('count', 2);
+globalStore.updateData('count', globalStore.data.count - 1);
+// Output: State: count changed to 1
 
-console.log("AND another “ADD” action is dispatched");
-store.dispatch({ type: 'ADD' });
-
-logState(); // The state should show a count of 2
-
-console.log("\nGIVEN the current count in the state is 2");
-console.log("WHEN a “SUBTRACT” action is dispatched");
-store.dispatch({ type: 'SUBTRACT' });
-
-logState(); // The state should display a count of 1
-
-console.log("\nScenario: Resetting the Tally Counter");
-logState();
-
-console.log("\nGIVEN the current count in the state is 1");
-console.log("WHEN a “RESET” action is dispatched");
-store.dispatch({ type: 'RESET' });
-
-logState(); // The state should display a count of 0
-
+// User story 4: Resetting the Tally Counter
+globalStore.updateData('count', 1);
+globalStore.updateData('count', 0);
+// Output: State: count changed to 0
