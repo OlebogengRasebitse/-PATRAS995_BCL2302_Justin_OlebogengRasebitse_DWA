@@ -1,58 +1,88 @@
-// Global store object
-const globalStore = {
-  data: {
-    count: 0,
-  },
-  observers: [],
+import { globalStore } from "./store";
 
-  // Method to subscribe observers
-  subscribe(observer) {
-    this.observers.push(observer);
-  },
-
-  // Method to unsubscribe observers
-  unsubscribe(observer) {
-    this.observers = this.observers.filter((obs) => obs !== observer);
-  },
-
-  // Method to update data and notify observers
-  updateData(key, value) {
-    this.data[key] = value;
-    this.notifyObservers(key, value);
-  },
-
-  // Method to notify all observers of a data update
-  notifyObservers(key, value) {
-    this.observers.forEach((observer) => {
-      observer.update(key, value);
-    });
-  },
-};
-
-// Observer object
-const consoleObserver = {
-  update(key, value) {
-    console.log(`State: ${key} changed to ${value}`);
-  },
-};
-
-// Subscribe consoleObserver to the global store
-globalStore.subscribe(consoleObserver);
-
-// User story 1: Increment the counter by one
-globalStore.updateData('count', 0);
-// Output: State: count changed to 0
-
-// User story 2: Increment the counter by one
-globalStore.updateData('count', globalStore.data.count + 1);
-// Output: State: count changed to 2
-
-// User story 3: Increment the counter by one
-globalStore.updateData('count', 2);
-globalStore.updateData('count', globalStore.data.count - 1);
-// Output: State: count changed to 1
-
-// User story 4: Resetting the Tally Counter
-globalStore.updateData('count', 1);
-globalStore.updateData('count', 0);
-// Output: State: count changed to 0
+//Reset Button
+class ResetButton extends HTMLElement {
+    constructor() {
+      super();
+      const button = document.createElement('sl-button');
+      button.textContent = 'Reset';
+  
+      // Add a class name to the button element
+      button.classList.add('reset-button');
+  
+      button.addEventListener('click', () => {
+        this.dispatchEvent(new CustomEvent('reset'));
+      });
+  
+      const shadow = this.attachShadow({ mode: 'open' });
+      shadow.appendChild(button);
+  
+      // Create a <style> element and append the CSS styles
+      const style = document.createElement('style');
+      style.textContent = `
+        .reset-button {
+         
+          background-color: #f06877;
+          color: #fff;
+          border: none;
+          padding: 8px 26px;
+          border-radius: 4px;
+        }
+      `;
+      shadow.appendChild(style);
+    }
+  }
+  
+  // Check if the custom element is already defined before defining it again
+  if (!customElements.get('sl-button')) {
+    customElements.define('sl-button', ResetButton);
+  }
+  
+  
+  // Rest of your existing code
+  const MAX_NUMBER = 5;
+  const MIN_NUMBER = -5;
+  const STEP_AMOUNT = 1;
+  
+  const number = document.querySelector('[data-key="number"]');
+  const subtract = document.querySelector('[data-key="subtract"]');
+  const add = document.querySelector('[data-key="add"]');
+  const reset = document.querySelector('sl-button');
+  
+  const resetHandler = () => {
+    number.value = 0;
+    subtract.disabled = true;
+    add.disabled = false;
+  };
+  
+  reset.addEventListener('reset', resetHandler);
+  
+  const subtractHandler = () => {
+    const newValue = parseInt(number.value) - STEP_AMOUNT;
+    number.value = newValue;
+  
+    // Get the button element using its ID
+  const button = document.getElementById('counter__button');
+  
+  // Update the text content of the button
+  button.textContent = 'Click me now!';
+  
+  
+    if (newValue >= MAX_NUMBER) {
+      add.disabled = false;
+    }
+  };
+  
+  const addHandler = () => {
+    const newValue = parseInt(number.value) + STEP_AMOUNT;
+    number.value = newValue;
+  
+    if (newValue <= MIN_NUMBER) {
+      subtract.disabled = false;
+    }
+  };
+  
+  subtract.addEventListener('click', subtractHandler);
+  add.addEventListener('click', addHandler);
+  
+  
