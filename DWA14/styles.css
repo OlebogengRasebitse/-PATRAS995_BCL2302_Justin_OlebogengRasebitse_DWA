@@ -1,0 +1,20 @@
+:root {
+  --color-green:var(--sl--#31c48d);
+  --color-white: #ffffff;
+  --color-dark-grey: #33333d;
+  --color-medium-grey: #424250;
+  --color-light-grey: #d2d6dc;
+}
+
+
+body {
+  margin: 0;
+  background-color: var(--color-medium-grey);
+  color: var(--color-white);
+  font-family: poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
